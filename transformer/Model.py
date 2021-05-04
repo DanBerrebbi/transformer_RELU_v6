@@ -153,7 +153,7 @@ class Encoder_Decoder(torch.nn.Module):
 
         # print attention weights, la je print la sentence
         import pickle
-        #NUM = np.random.randint(1000000)
+        NUM = np.random.randint(1000000)
         #pickle.dump(src, open("ATTENTION/src_{}".format(NUM), "wb"))
         #pickle.dump(sim, open("ATTENTION/sim_{}".format(NUM), "wb"))
         #print(30*"%%%%")
