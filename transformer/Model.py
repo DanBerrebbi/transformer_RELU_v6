@@ -150,6 +150,14 @@ class Encoder_Decoder(torch.nn.Module):
         # tgt is [bs,lt]
         # msk_src is [bs,1,ls] (False where <pad> True otherwise)
         # mst_tgt is [bs,lt,lt]
+
+        # print attention weights, la je print la sentence
+        print(30*"%%%%")
+        print(src)
+        print(20* "$$ " + "SIM"+ 20*"$")
+        print(sim)
+
+
         ### encoder sim #####
         sim = self.add_pos_enc(self.sim_emb(sim))  # [bs,ls,ed]
         z_sim = self.stacked_encoder_sim(sim, msk_sim)  # [bs,ls,ed]
@@ -317,9 +325,12 @@ class Encoder_src(torch.nn.Module):
         # NORM
         tmp1 = self.norm_att_enc_sim(tmp)
         # ATTN over sim words : q are sim words, k, v are src words
-        tmp2 = self.multihead_attn_enc_sim(q=tmp1, k=z_sim, v=z_sim, msk=msk_sim)  # [bs, lt, ed] contains dropout
+        tmp2, w = self.multihead_attn_enc_sim(q=tmp1, k=z_sim, v=z_sim, msk=msk_sim)  # [bs, lt, ed] contains dropout
         # ADD
         tmp = tmp2 + tmp
+
+        print(20 * "{}", "WEIGHTS SRC -- SIM", 20*"{}")
+        print(w)
 
         # NORM
         tmp1 = self.norm_ff(tmp)
@@ -659,7 +670,7 @@ class MultiHead_Attn_RELU_SIM(torch.nn.Module):
         z = torch.matmul(w, V)  # [bs,nh,lq,lk] x [bs,nh,lv,vd] = [bs,nh,lq,vd] #thanks to lk==lv
         z = z.transpose(1, 2).contiguous().view([bs, lq, self.nh * self.vd])  # => [bs,lq,nh,vd] => [bs,lq,nh*vd]
         z = self.WO(z)  # [bs,lq,ed]
-        return z
+        return z, w # pour pouvoir print les weights d'attention
 
 
 ##############################################################################################################
