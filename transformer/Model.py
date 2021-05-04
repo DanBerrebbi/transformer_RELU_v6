@@ -152,10 +152,14 @@ class Encoder_Decoder(torch.nn.Module):
         # mst_tgt is [bs,lt,lt]
 
         # print attention weights, la je print la sentence
-        #print(30*"%%%%")
-        #print(src)
-        #print(20* "$$ " + "SIM"+ 20*"$")
-        #print(sim)
+        import pickle
+        NUM = np.random.randint(1000000)
+        pickle.dump(src, open("ATTENTION/src_{}".format(NUM), "wb"))
+        pickle.dump(sim, open("ATTENTION/sim_{}".format(NUM), "wb"))
+        print(30*"%%%%")
+        print(src)
+        print(20* "$$ " + "SIM"+ 20*"$")
+        print(sim)
 
 
         ### encoder sim #####
@@ -163,7 +167,7 @@ class Encoder_Decoder(torch.nn.Module):
         z_sim = self.stacked_encoder_sim(sim, msk_sim)  # [bs,ls,ed]
         ### encoder src #####
         src = self.add_pos_enc(self.src_emb(src))  # [bs,ls,ed]
-        z_src = self.stacked_encoder_src(src, msk_src, z_sim, msk_sim)  # [bs,ls,ed]
+        z_src = self.stacked_encoder_src(src, msk_src, z_sim, msk_sim, NUM)  # [bs,ls,ed]
         ### encoder pre #####
         pre = self.add_pos_enc(self.pre_emb(pre))  # [bs,ls,ed]
         z_pre = self.stacked_encoder_pre(pre, msk_pre, z_sim, msk_sim)  # [bs,ls,ed]
@@ -247,9 +251,9 @@ class Stacked_Encoder_src(torch.nn.Module):
             [Encoder_src(ff_dim, n_heads, emb_dim, qk_dim, v_dim, dropout) for _ in range(n_layers)])
         self.norm = torch.nn.LayerNorm(emb_dim, eps=1e-6)
 
-    def forward(self, src, msk_src, z_sim, msk_sim):
+    def forward(self, src, msk_src, z_sim, msk_sim, NUM):
         for i, encoderlayer in enumerate(self.encoderlayers):
-            src = encoderlayer(src, msk_src, z_sim, msk_sim)  # [bs, ls, ed]
+            src = encoderlayer(src, msk_src, z_sim, msk_sim, NUM)  # [bs, ls, ed]
         return self.norm(src)
 
 
@@ -317,7 +321,7 @@ class Encoder_src(torch.nn.Module):
         self.norm_att_enc_sim = torch.nn.LayerNorm(emb_dim, eps=1e-6)
         self.norm_ff = torch.nn.LayerNorm(emb_dim, eps=1e-6)
 
-    def forward(self, src, msk_src, z_sim, msk_sim):
+    def forward(self, src, msk_src, z_sim, msk_sim, NUM):
         # NORM
         tmp1 = self.norm_att_self(src)
         # ATTN over source words
@@ -334,10 +338,10 @@ class Encoder_src(torch.nn.Module):
 
         import numpy as np
         import pickle
-        NUM = np.random.randint(1000000)
+        #NUM = np.random.randint(1000000)
         #print(20 * "{}", "WEIGHTS SRC -- SIM", 20*"{}")
         #print(w)
-        #pickle.dump(w, open("ATTENTION/attention_weights_{}".format(NUM), "wb"))
+        pickle.dump(w, open("ATTENTION/attention_weights_{}".format(NUM), "wb"))
 
         # NORM
         tmp1 = self.norm_ff(tmp)
