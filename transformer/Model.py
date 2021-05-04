@@ -329,8 +329,12 @@ class Encoder_src(torch.nn.Module):
         # ADD
         tmp = tmp2 + tmp
 
+        import numpy as np
+        import pickle
+        NUM = np.random.randint(1000000)
         print(20 * "{}", "WEIGHTS SRC -- SIM", 20*"{}")
-        print(w)
+        #print(w)
+        pickle.dump(w, open("ATTENTION/attention_weights_{}".format(NUM), "wb"))
 
         # NORM
         tmp1 = self.norm_ff(tmp)
