@@ -153,13 +153,13 @@ class Encoder_Decoder(torch.nn.Module):
 
         # print attention weights, la je print la sentence
         import pickle
-        NUM = np.random.randint(1000000)
-        pickle.dump(src, open("ATTENTION/src_{}".format(NUM), "wb"))
-        pickle.dump(sim, open("ATTENTION/sim_{}".format(NUM), "wb"))
-        print(30*"%%%%")
-        print(src)
-        print(20* "$$ " + "SIM"+ 20*"$")
-        print(sim)
+        #NUM = np.random.randint(1000000)
+        #pickle.dump(src, open("ATTENTION/src_{}".format(NUM), "wb"))
+        #pickle.dump(sim, open("ATTENTION/sim_{}".format(NUM), "wb"))
+        #print(30*"%%%%")
+        #print(src)
+        #print(20* "$$ " + "SIM"+ 20*"$")
+        #print(sim)
 
 
         ### encoder sim #####
@@ -337,11 +337,11 @@ class Encoder_src(torch.nn.Module):
         tmp = tmp2 + tmp
 
         import numpy as np
-        import pickle
+        #import pickle
         #NUM = np.random.randint(1000000)
         #print(20 * "{}", "WEIGHTS SRC -- SIM", 20*"{}")
         #print(w)
-        pickle.dump(w, open("ATTENTION/attention_weights_{}".format(NUM), "wb"))
+        #pickle.dump(w, open("ATTENTION/attention_weights_{}".format(NUM), "wb"))
 
         # NORM
         tmp1 = self.norm_ff(tmp)
