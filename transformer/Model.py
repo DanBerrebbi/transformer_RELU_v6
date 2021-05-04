@@ -153,7 +153,7 @@ class Encoder_Decoder(torch.nn.Module):
         ### encoder sim #####
         sim = self.add_pos_enc(self.sim_emb(sim))  # [bs,ls,ed]
         z_sim = self.stacked_encoder_sim(sim, msk_sim)  # [bs,ls,ed]
-        ### encoder sim #####
+        ### encoder src #####
         src = self.add_pos_enc(self.src_emb(src))  # [bs,ls,ed]
         z_src = self.stacked_encoder_src(src, msk_src, z_sim, msk_sim)  # [bs,ls,ed]
         ### encoder pre #####
@@ -433,9 +433,9 @@ class Decoder(torch.nn.Module):
         # NORM
         tmp1 = self.norm_att_enc_src2(tmp)
         # ATTN over src words : q are words from the previous layer, k, v are src words
-        tmp3 = self.multihead_attn_enc_src2(q=tmp1, k=z_src, v=z_src, msk=msk_src)  # la query reste tmp1 car tmp1 est la variable en sortie du précédent layer
+        TMP3 = self.multihead_attn_enc_src2(q=tmp1, k=z_src, v=z_src, msk=msk_src)  # la query reste tmp1 car tmp1 est la variable en sortie du précédent layer
         # ADD
-        tmp = tmp3 + tmp
+        #tmp = tmp3 + tmp
 
         ################################## STRUCTURE PARALLELE  ############################################
         # NORM
@@ -463,7 +463,7 @@ class Decoder(torch.nn.Module):
         dp_src, dp_pre = torch.nn.Dropout(dropout), torch.nn.Dropout(dropout)
         z_src, z_pre = dp_src(z_src), dp_pre(z_pre)
 
-        tmp = tmp + z_src + z_pre
+        tmp = tmp + TMP3 + z_pre
 
 
         # NORM
