@@ -152,10 +152,10 @@ class Encoder_Decoder(torch.nn.Module):
         # mst_tgt is [bs,lt,lt]
 
         # print attention weights, la je print la sentence
-        print(30*"%%%%")
-        print(src)
-        print(20* "$$ " + "SIM"+ 20*"$")
-        print(sim)
+        #print(30*"%%%%")
+        #print(src)
+        #print(20* "$$ " + "SIM"+ 20*"$")
+        #print(sim)
 
 
         ### encoder sim #####
@@ -242,6 +242,7 @@ class AddPositionalEncoding(torch.nn.Module):
 class Stacked_Encoder_src(torch.nn.Module):
     def __init__(self, n_layers, ff_dim, n_heads, emb_dim, qk_dim, v_dim, dropout):
         super(Stacked_Encoder_src, self).__init__()
+        n_layers=3 # je le force a avoir un seul layer pr recup moins d'attn là
         self.encoderlayers = torch.nn.ModuleList(
             [Encoder_src(ff_dim, n_heads, emb_dim, qk_dim, v_dim, dropout) for _ in range(n_layers)])
         self.norm = torch.nn.LayerNorm(emb_dim, eps=1e-6)
@@ -258,6 +259,7 @@ class Stacked_Encoder_src(torch.nn.Module):
 class Stacked_Encoder_sim(torch.nn.Module):
     def __init__(self, n_layers, ff_dim, n_heads, emb_dim, qk_dim, v_dim, dropout):
         super(Stacked_Encoder_sim, self).__init__()
+        n_layers =3
         self.encoderlayers = torch.nn.ModuleList(
             [Encoder_sim(ff_dim, n_heads, emb_dim, qk_dim, v_dim, dropout) for _ in range(n_layers)])
         self.norm = torch.nn.LayerNorm(emb_dim, eps=1e-6)
@@ -274,6 +276,7 @@ class Stacked_Encoder_sim(torch.nn.Module):
 class Stacked_Encoder_pre(torch.nn.Module):
     def __init__(self, n_layers, ff_dim, n_heads, emb_dim, qk_dim, v_dim, dropout):
         super(Stacked_Encoder_pre, self).__init__()
+        n_layers = 1
         self.encoderlayers = torch.nn.ModuleList(
             [Encoder_pre(ff_dim, n_heads, emb_dim, qk_dim, v_dim, dropout) for _ in range(n_layers)])
         self.norm = torch.nn.LayerNorm(emb_dim, eps=1e-6)
@@ -332,9 +335,9 @@ class Encoder_src(torch.nn.Module):
         import numpy as np
         import pickle
         NUM = np.random.randint(1000000)
-        print(20 * "{}", "WEIGHTS SRC -- SIM", 20*"{}")
+        #print(20 * "{}", "WEIGHTS SRC -- SIM", 20*"{}")
         #print(w)
-        pickle.dump(w, open("ATTENTION/attention_weights_{}".format(NUM), "wb"))
+        #pickle.dump(w, open("ATTENTION/attention_weights_{}".format(NUM), "wb"))
 
         # NORM
         tmp1 = self.norm_ff(tmp)
