@@ -14,10 +14,10 @@ data=$josep/data
 stovec=$josep/stovec
 
 dir=$josep/minmt_base
-dnet=$PWD/model_serie
+dnet=$PWD/model_serie_N_values
 
 
-fmod=$dnet/network.checkpoint_00030000.pt ####### A MODIF
+fmod=$dnet/network.checkpoint_00235000.pt ####### A MODIF
 
 	for corpus in Europarl; do
 	    echo $corpus
