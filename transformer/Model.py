@@ -178,7 +178,7 @@ class Encoder_Decoder(torch.nn.Module):
         y = self.generator(z_tgt)  # [bs, lt, Vt]
         return y  ### returns logits (for learning)
 
-    def encode_src(self, src, msk_src, z_sim, msk_sim):               # je trouve la fonction encode et la fonction decode redondante avec forward
+    def encode_src(self, src, msk_src, z_sim, msk_sim, NUM):               # je trouve la fonction encode et la fonction decode redondante avec forward
         src = self.add_pos_enc(self.src_emb(src))  # [bs,ls,ed]
         z_src = self.stacked_encoder_src(src, msk_src, z_sim, msk_sim)  # [bs,ls,ed]
         return z_src
