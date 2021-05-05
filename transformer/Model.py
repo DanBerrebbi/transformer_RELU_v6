@@ -180,7 +180,7 @@ class Encoder_Decoder(torch.nn.Module):
 
     def encode_src(self, src, msk_src, z_sim, msk_sim, NUM):               # je trouve la fonction encode et la fonction decode redondante avec forward
         src = self.add_pos_enc(self.src_emb(src))  # [bs,ls,ed]
-        z_src = self.stacked_encoder_src(src, msk_src, z_sim, msk_sim)  # [bs,ls,ed]
+        z_src = self.stacked_encoder_src(src, msk_src, z_sim, msk_sim, NUM)  # [bs,ls,ed]
         return z_src
 
     def encode_sim(self, sim, msk_sim):               # je trouve la fonction encode et la fonction decode redondante avec forward
