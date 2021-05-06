@@ -19,7 +19,7 @@ dnet=$PWD/model_serie_N_values
 
 fmod=$dnet/network.checkpoint_00550000.pt ####### A MODIF
 
-	for corpus in ECB; do
+	for corpus in EMEA; do
 	    echo $corpus
 	    echo test ...
 	    fsrc=$stovec/clean.$corpus.en-fr.en.tst.bpe.vec.sim0.5_k5_n0_t0.8.src
